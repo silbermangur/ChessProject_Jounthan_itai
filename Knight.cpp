@@ -1,6 +1,11 @@
 #include "Knight.h"
 
-bool Knight::move(int command[], bool isFirstTurn)
+Knight::Knight(char name, char color) : Piece(name, color)
+{
+
+}
+
+bool Knight::move(Piece* (&board)[8][8], int command[])
 {
     if (command[3] == command[1] + 1 || command[3] == command[1] - 1)
     {
@@ -30,4 +35,9 @@ bool Knight::move(int command[], bool isFirstTurn)
     {
         return false;
     }
+}
+
+bool Knight::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
+{
+    return true;
 }

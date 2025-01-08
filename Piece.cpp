@@ -1,14 +1,15 @@
 #include "Piece.h"
 
-Piece::Piece(char name, int color)
+Piece::Piece(char name, char color)
 {
-	_name = name;
-	_color = color;
+	setName(name);
+	setColor(color);
 }
 
 Piece::~Piece()
 {
 	_name = '#';
+	_color = '#';
 }
 
 char Piece::getName()
@@ -16,8 +17,23 @@ char Piece::getName()
 	return _name;
 }
 
-int Piece::getColor()
+char Piece::getColor()
 {
 	return _color;
+}
+
+int* Piece::getPosition()
+{
+	return _position;
+}
+
+void Piece::setName(char name)
+{
+	_name = name;
+}
+
+void Piece::setColor(char color)
+{
+	_color = color;
 }
 

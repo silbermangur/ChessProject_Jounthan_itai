@@ -4,15 +4,17 @@
 class Piece
 {
 public:
-	Piece(char name, int color);
+	Piece(char name, char color);
     ~Piece();
-	virtual bool move(int command[], bool isFirstTurn) = 0;
+	virtual bool move(Piece* (&board)[8][8], int command[]) = 0;
+	virtual bool isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol) = 0;
 	char getName();
-	int getColor();
+	char getColor();
+	void setName(char name);
+	void setColor(char color);
 	
 private:
 	char _name;
-	int _color;
-
+	char _color;
 
 };
