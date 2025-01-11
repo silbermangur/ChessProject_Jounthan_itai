@@ -1,6 +1,7 @@
 #pragma once
 #include "Rock.h"
 #include "Piece.h"
+#include "King.h"
 #include <vector>
 
 
@@ -13,12 +14,14 @@ public:
 	void printPosition();
 
 	int isCommandValid(string command);
+	bool doesMovePutKingInCheck(int srcRow, int srcCol
+		, int destRow, int destCol, Piece* (&board)[8][8], string command);
+	bool didMoveCheckOpponent(int srcRow, int srcCol, Piece* (&board)[8][8], string command);
 	
 
 
 	void printColor();
-	bool setBoard(string command);
-	void movePiece(string dest, int row, int col);
+	void movePiece(int srcRow, int srcCol, int destRow, int destCol, string srcSquare, string dstSquare);
 	vector<vector<string>> getPositionBoard();
 
 private:

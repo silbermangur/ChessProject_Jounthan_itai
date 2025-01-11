@@ -1,24 +1,15 @@
 #include "Piece.h"
 
-
-
-
-bool Piece::mov(string command,  Piece* (&board)[8][8])
+bool Piece::mov(int srcRow, int srcCol, int dstRow, int dstCol,  Piece* (&board)[8][8])
 {
 	return false;
 }
 
-bool Piece::isPieceInWay(string command, Piece* (&board)[8][8], int row, int col,
+bool Piece::isPieceInWay(Piece* (&board)[8][8], int row, int col,
 	int destRow, int destCol)
 {
-	return false;
+	return 0;
 }
-
-bool Piece::isCheck(Piece* (&board)[8][8], int destRow, int destCol)
-{
-	return false;
-}
-
 void Piece::setName(char c)
 {
 	this->_name = c;
@@ -34,17 +25,17 @@ void Piece::setColor(char c)
 	this->_color = c;
 }
 
-char Piece::getName()
+char Piece::getName() const
 {
 	return this->_name;
 }
 
-char Piece::getColor()
+char Piece::getColor() const
 {
 	return this->_color;
 }
 
-string Piece::getPosition()
+string Piece::getPosition() const
 {
 	return this->_position;
 }

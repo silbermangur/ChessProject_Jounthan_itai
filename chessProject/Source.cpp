@@ -3,7 +3,7 @@ This file servers as an example of how to use Pipe.h file.
 It is recommended to use the following code in your project, 
 in order to read and write information from and to the Backend
 */
-/*
+/**/
 #include "Pipe.h"
 #include <iostream>
 #include <thread>
@@ -49,25 +49,23 @@ void main()
 	// YOUR CODE
 
 	strcpy_s(msgToGraphics, "rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR1"); // just example...
-	GameManger g("rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR1");
+	GameManger g("rnbkqbnr################################################RNBKQBNR1");
 
 	p.sendMessageToGraphics(msgToGraphics);   // send the board string
 
 	// get message from graphics
 	string msgFromGraphics = p.getMessageFromGraphics();
-	
+	char s;
+	char ss[2];
 	while (msgFromGraphics != "quit")
 	{
 		// should handle the string the sent from graphics
 		// according the protocol. Ex: e2e4           (move e2 to e4)
-		if (g.setBoard(msgFromGraphics))
-		{
-			strcpy_s(msgToGraphics, "1"); // msgToGraphics should contain the result of the operation
-		}
-		else
-		{
-			strcpy_s(msgToGraphics, "2");
-		}
+		s = '0' + (g.isCommandValid(msgFromGraphics));
+		ss[0] = s;
+		ss[1] = '\0';
+		
+		strcpy_s(msgToGraphics, ss);
 		// YOUR CODE
 		
 
@@ -86,4 +84,4 @@ void main()
 	}
 
 	p.close();
-}*/
+}

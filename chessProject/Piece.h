@@ -10,16 +10,16 @@ public:
 	Piece(char name = ' ', char color = ' ', string position = "")
 		: _name(name), _color(color), _position(position) {}
 	virtual ~Piece() {}
-	virtual bool mov(string command, Piece* (&board)[8][8]);
-	virtual bool isPieceInWay(string command, Piece* (&board)[8][8], int row, int col,
+	virtual bool mov(int srcRow, int srcCol, int dstRow, int dstCol, Piece* (&board)[8][8]);
+	virtual bool isPieceInWay(Piece* (&board)[8][8], int row, int col,
 		int destRow, int destCol);
-	virtual bool isCheck(Piece* (&board)[8][8], int destRow, int destCol);
 	void setName(char c);
 	void setPosition(string position);
 	void setColor(char c);
-	char getName();
-	char getColor();
-	string getPosition();
+
+	char getName() const;
+	char getColor() const;
+	string getPosition()const;
 private:
 	char _name;
 	char _color;

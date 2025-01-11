@@ -5,13 +5,12 @@ GameManger::GameManger(string gameBoard) : positionBoard(8, vector<string>(8))
 	int n = 0;
 	int positionNum = 8;
 	char positionChar = 'a';
-	
+	board[0][3] = new King('k', 'b', "d8");
+	board[7][3] = new King('k', 'w', "d1");
 	board[0][0] = new Rock('r', 'b', "a8");
 	board[0][7] = new Rock('r', 'b', "h8");
 	board[7][0] = new Rock('r', 'w', "a1");
 	board[7][7] = new Rock('r', 'w', "h1");
-	
-
 	//initlize board to starting postion
 	for (int i = 0; i < 8; i++)
 	{
@@ -87,35 +86,147 @@ int GameManger::isCommandValid(string command)
 	int destCol = command[2] - 'a';  // 'a' -> column 0, 'b' -> column 1, etc.
 	int row = '8' - command[1];  // '1' -> row 0, '2' -> row 1, etc.
 	int col = command[0] - 'a';// 'a' -> column 0, 'b' -> column 1, etc.
+	string srcSquare = command.substr(0, 2);
+	string dstSquare = command.substr(2, 2);
+	
+	
 
 
 	if (command[0] == command[2] && command[1] == command[3])
 	{
+		cout << "Invalid Move!!source square and dest square identical." << endl;
 		return 7;
 	}
 	else if (command[0] > 'h' || command[0] < 'a' || command[2] > 'h' || command[2] < 'a'
 		|| command[1] < '1' || command[1] > '8' || command[3] < '1' || command[3] > '8')
 	{
+		cout << "Invalid Move!!source square or dest square invalid." << endl;
 		return 5;
 	}
 	else if (this->board[row][col]->getColor() != this->turn)
 	{
+		cout << "Invalid Move!!source square dosent contain current player piece." << endl;
 		return 2;
 	}
 	else if (this->board[destRow][destCol]->getColor() == this->board[row][col]->getColor())
 	{
+		cout << "Invalid move!!dest sqaure conatins current player piece." << endl;
 		return 3;
 	}
-	else if (this->board[row][col]->mov(command, this->board) == false || 
-		board[row][col]->isPieceInWay(command, this->board, row, col, destRow, destCol) == false)
+	else if (this->board[row][col]->mov(row, col, destRow, destCol , this->board) == false || 
+		board[row][col]->isPieceInWay(this->board, row, col, destRow, destCol))
 	{
+		cout << "Invalid move!!invalid movement of piece." << endl;
 		return 6;
 	}
-	else if (board[row][col]->isCheck(this->board, destRow, destCol))
+	else if (doesMovePutKingInCheck(row, col, 
+		destRow, destCol, this->board, command))
 	{
-		return 8;
+		cout << "Invalid move!!move will cause check on yourself" << endl;
+		return 4;
 	}
-	return 0;
+	else
+	{
+		movePiece(row, col, destRow, destCol, srcSquare, dstSquare);
+		if (didMoveCheckOpponent(destRow, destCol, this->board, command))
+		{
+			return 1;
+		}
+		return 0;
+	}
+}
+
+bool GameManger::doesMovePutKingInCheck(int srcRow, int srcCol, int destRow, int destCol, Piece* (&board)[8][8], string command)
+{
+	// Save the original state
+	int kingRow = 0, kingCol = 0;
+	char playerColor = board[srcRow][srcCol]->getColor();
+
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = 0; col < 8; col++)
+		{
+			if (board[row][col]->getName() == 'k' &&
+				board[srcRow][srcCol]->getColor() == board[row][col]->getColor() ||
+				board[row][col]->getName() == 'K' &&
+				board[srcRow][srcCol]->getColor() == board[row][col]->getColor())
+			{
+				kingRow = row;
+				kingCol = col;
+				break;
+			}
+		}
+	}
+	// Backup the board state
+	Piece* tempDest = board[destRow][destCol];
+	Piece* tempSrc = board[srcRow][srcCol];
+
+	// Simulate the move
+	board[destRow][destCol] = board[srcRow][srcCol];
+	board[srcRow][srcCol] = new Piece('#', ' ', board[srcRow][srcCol]->getPosition());
+
+	// Update king's position if the king is moved
+	if (srcRow == kingRow && srcCol == kingCol) 
+	{
+		kingRow = destRow;
+		kingCol = destCol;
+	}
+
+	// Check if the king is in check
+	bool kingInCheck = false;
+	for (int i = 0; i < 8; ++i)
+	{
+		for (int j = 0; j < 8; ++j)
+		{
+			if (board[i][j] != nullptr && board[i][j]->getColor() != ' ' && board[i][j]->getColor() != playerColor)
+			{
+				int srcRow = i;
+				int srcCol = j;
+
+				// If opponent's piece can attack the king's position, king is in check
+				if (board[i][j]->mov(srcRow, srcCol, kingRow, kingCol, board) &&
+					board[i][j]->isPieceInWay(board, i, j, kingRow, kingCol) == false)
+				{
+					kingInCheck = true;
+					break;
+				}
+			}
+		}
+		if (kingInCheck) break;
+	}
+
+	// Restore the board
+	board[srcRow][srcCol] = tempSrc;
+	board[destRow][destCol] = tempDest;
+
+	return kingInCheck;
+}
+
+bool GameManger::didMoveCheckOpponent(int srcRow, int srcCol, Piece* (&board)[8][8], string command)
+{
+	int kingRow = 0, kingCol = 0;
+	
+	for (int row = 0; row < 8; row++)
+	{
+		for (int col = 0; col < 8; col++)
+		{
+			if (board[row][col]->getName() == 'k' &&
+				board[row][col]->getColor() != board[srcRow][srcCol]->getColor() ||
+				board[row][col]->getName() == 'K' &&
+				board[row][col]->getColor() != board[srcRow][srcCol]->getColor())
+			{
+				kingRow = row;
+				kingCol = col;
+			}
+		}
+	}
+	
+	if(board[srcRow][srcCol]->mov(srcRow, srcCol, kingRow, kingCol, board) &&
+		board[srcRow][srcCol]->isPieceInWay(board, srcRow, srcCol, kingRow, kingCol) == false)
+	{
+		return true;
+	}
+	return false;
 }
 
 void GameManger::printColor()
@@ -130,83 +241,34 @@ void GameManger::printColor()
 		cout << "\n";
 	}
 }
-bool GameManger::setBoard(string command)
+void GameManger::movePiece(int srcRow, int srcCol, int destRow, int destCol, string srcSquare, string dstSquare)
 {
-	int row, col, h;
-	string start = command.substr(0, 2);
-	string end = command.substr(2, 2);
-
-	for (row = 0; row < 8; row++)
+	if (this->turnCounter == 0)
 	{
-		for (col = 0; col < 8; col++)
-		{
-			if (board[row][col]->getPosition() == start)
-			{
-				if (board[row][col]->mov(command, this->board))
-				{
-					movePiece(end, row, col);
-					if (this->turnCounter == 0)
-					{
-						this->turn = 'w';
-						this->turnCounter++;
-					}
-					else
-					{
-						this->turn = 'b';
-						this->turnCounter--;
-					}
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-				break;
-			}
-		}
-		
-		if (col < 8 && board[row][col]->getPosition() == start)
-		{
-			break;
-		}
-		
+		this->turn = 'w';
+		this->turnCounter++;
 	}
-	return false;
-}
-
-void GameManger::movePiece(string dest, int row, int col)
-{
-	int sourceRow = row, sourceCol = col, destRow, destCol;
-	bool stop = false;
-	
-	for (destRow = 0; destRow < 8; destRow++)
+	else
 	{
-		for (destCol = 0; destCol < 8; destCol++)
-		{
-			if (board[destRow][destCol]->getPosition() == dest)
-			{
-				delete board[destRow][destCol];
-				board[destRow][destCol] = new Rock(board[row][col]->getName(), board[row][col]->getColor(), dest);
-				delete board[row][col];
-				board[row][col] = new Piece();
-				board[row][col]->setColor(' ');
-				board[row][col]->setName('#');
-				board[row][col]->setPosition(this->positionBoard[row][col]);
-				break;
-			}
-
-		}
-
-		if (stop)
-		{
-			break;
-		}
+		this->turn = 'b';
+		this->turnCounter--;
 	}
+	delete board[destRow][destCol];
+	if (board[srcRow][srcCol]->getName() == 'r' || board[srcRow][srcCol]->getName() == 'R')
+	{
+		board[destRow][destCol] = new Rock(board[srcRow][srcCol]->getName(),
+			board[srcRow][srcCol]->getColor(), dstSquare);
+	}
+	else if (board[srcRow][srcCol]->getName() == 'k' || board[srcRow][srcCol]->getName() == 'K')
+	{
+		board[destRow][destCol] = new King(board[srcRow][srcCol]->getName(),
+			board[srcRow][srcCol]->getColor(), dstSquare);
+	}
+	delete board[srcRow][srcCol];
+	board[srcRow][srcCol] = new Piece('#', ' ', srcSquare);
 }
 
 vector<vector<string>> GameManger::getPositionBoard()
 {
 	return positionBoard;
 }
-
-

@@ -1,4 +1,4 @@
-
+/*
 #include "GameManager.h"
 #include "Rock.h"
 
@@ -7,7 +7,7 @@ int main()
 {
 	string input = "";
 	bool stop =true;
-	GameManger g("rnbkqbnrpppppppp################################PPPPPPPPRNBKQBNR1");
+	GameManger g("rnbkqbnr################################################RNBKQBNR1");
 	
 
 	while (stop)
@@ -16,10 +16,9 @@ int main()
 		cin >> input;
 		if (g.isCommandValid(input) < 2)
 		{
-			g.setBoard(input);
 			g.printBoard();
 			g.printPosition();
 			g.printColor();
 		}
 	}
-}
+}*/
