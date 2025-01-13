@@ -1,25 +1,25 @@
 #include "Queen.h"
 
-Queen::Queen(char name, char color) : Piece(name, color)
+Queen::Queen(char name, char color, std::string position) : Piece(name, color, position)
 {
 }
 
-bool Queen::move(Piece* (&board)[8][8], int command[])
+bool Queen::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
-    if (command[1] != command[3])
+    if (row != destRow)
     {
-        if (command[0] == command[2] || (command[1] - command[3] == (command[0] - command[2]) || (command[0] - command[2]) * -1))
+        if (col == destCol || (row - destRow == (col - destCol) || (col - destCol) * -1))
         {
-            return isPieceInWay(board, command[1], command[0], command[3], command[2]);
+            return true;
         }
         else
         {
             return false;
         }
     }
-    else if (command[0] != command[2])
+    else if (col != destCol)
     {
-        return isPieceInWay(board, command[1], command[0], command[3], command[2]);
+        return true;
     }
     else
     {

@@ -1,10 +1,10 @@
 #include "Pawn.h"
 
-Pawn::Pawn(char name, char color) : Piece(name, color)
+Pawn::Pawn(char name, char color, std::string position) : Piece(name, color, position)
 {
 }
 
-bool Pawn::move(Piece* (&board)[8][8], int command[])
+bool Pawn::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
     int one = 1;
     int two = 2;
@@ -16,29 +16,29 @@ bool Pawn::move(Piece* (&board)[8][8], int command[])
         two = -2;
         pawnStartPos = 7;
     }
-    if (command[0] == command[2])
+    if (col == destCol)
     {
-        if (command[3] == command[1] + one)
+        if (destRow == row + one)
         {
             return true;
         }
-        else if (command[3] == command[1] + two)
+        else if (destRow == row + two)
         {
-            if (command[1] != pawnStartPos)
+            if (row != pawnStartPos)
             {
                 return false;
             }
-            return isPieceInWay(board, command[1], command[0], command[3], command[2]);
+            return true;
         }
         return false;
     }
     else
     {
-        if (command[2] == command[0] + 1 || command[2] == command[0] - 1)
+        if (destCol == col + 1 || destCol == col - 1)
         {
-            if (command[3] == command[1] + one)
+            if (destRow == row + one)
             {
-                if (board[command[3]][command[2]]->getColor() != (board[command[1]][command[0]]->getColor()) && ('#'))
+                if (board[destRow][destCol]->getColor() != (board[row][col]->getColor()) && ('#'))
                 {
                     return true;
                 }
@@ -57,7 +57,7 @@ bool Pawn::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, in
     }
     if (board[row + one][col]->getName() == '#')
     {
-        return true;
+        return false;
     }
-    return false;
+    return true;
 }

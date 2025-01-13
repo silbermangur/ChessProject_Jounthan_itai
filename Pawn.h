@@ -3,7 +3,7 @@
 
 class Pawn : public Piece {
 public:
-	Pawn(char name, char color);
-	virtual bool move(Piece* (&board)[8][8], int command[]) override;
+	Pawn(char name, char color, std::string position);
+	virtual bool move(Piece* (&board)[8][8], int row, int col, int destRow, int destCol) override;
 	virtual bool isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol) override;
 };

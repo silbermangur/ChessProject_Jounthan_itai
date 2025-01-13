@@ -1,15 +1,15 @@
 #include "Knight.h"
 
-Knight::Knight(char name, char color) : Piece(name, color)
+Knight::Knight(char name, char color, std::string position) : Piece(name, color, position)
 {
 
 }
 
-bool Knight::move(Piece* (&board)[8][8], int command[])
+bool Knight::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
-    if (command[3] == command[1] + 1 || command[3] == command[1] - 1)
+    if (destRow == row + 1 || destRow == row - 1)
     {
-        if (command[2] == command[0] + 2 || command[2] == command[0] - 2)
+        if (destCol == col + 2 || destCol == col - 2)
         {
             return true;
         }
@@ -19,9 +19,9 @@ bool Knight::move(Piece* (&board)[8][8], int command[])
         }
     }
 
-    else if (command[3] == command[1] + 2 || command[3] == command[1] - 2)
+    else if (destRow == row + 2 || destRow == row - 2)
     {
-        if (command[3] == command[1] + 1 || command[3] == command[1] - 1)
+        if (destCol == col + 1 || destCol == col - 1)
         {
             return true;
         }
@@ -39,5 +39,5 @@ bool Knight::move(Piece* (&board)[8][8], int command[])
 
 bool Knight::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
-    return true;
+    return false;
 }

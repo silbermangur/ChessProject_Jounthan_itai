@@ -1,14 +1,14 @@
 #include "Bishop.h"
 
-Bishop::Bishop(char name, char color) : Piece(name, color)
+Bishop::Bishop(char name, char color, std::string position) : Piece(name, color, position)
 {
 }
 
-bool Bishop::move(Piece* (&board)[8][8], int command[])
+bool Bishop::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
-    if (command[1] - command[3] == (command[0] - command[2]) || (command[0] - command[2]) * -1)
+    if (row - destRow == (col - destCol) || (col - destCol) * -1)
     {
-        return isPieceInWay;
+        return true;
     }
     else
     {

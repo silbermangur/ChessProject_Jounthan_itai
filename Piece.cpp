@@ -1,15 +1,19 @@
 #include "Piece.h"
 
-Piece::Piece(char name, char color)
-{
-	setName(name);
-	setColor(color);
-}
-
 Piece::~Piece()
 {
 	_name = '#';
 	_color = '#';
+}
+
+bool Piece::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
+{
+	return false;
+}
+
+bool Piece::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
+{
+	return false;
 }
 
 char Piece::getName()
@@ -22,7 +26,7 @@ char Piece::getColor()
 	return _color;
 }
 
-int* Piece::getPosition()
+std::string Piece::getPosition() const
 {
 	return _position;
 }
@@ -37,3 +41,7 @@ void Piece::setColor(char color)
 	_color = color;
 }
 
+void Piece::setPosition(std::string position)
+{
+	_position = position;
+}
