@@ -19,10 +19,9 @@ GameManger::GameManger(string gameBoard) : positionBoard(8, vector<string>(8))
 	board[0][5] = new Bishop('b', 'b', "f8");
 	board[7][2] = new Bishop('B', 'w', "c1");
 	board[7][5] = new Bishop('B', 'w', "f1");
+	board[0][4] = new Queen('q', 'b', "e8");
+	board[7][4] = new Queen('Q', 'w', "e1");
 
-
-	
-	
 	//initlize board to starting postion
 	for (int i = 0; i < 8; i++)
 	{
@@ -285,6 +284,11 @@ void GameManger::movePiece(int srcRow, int srcCol, int destRow, int destCol, str
 	else if (board[srcRow][srcCol]->getName() == 'b' || board[srcRow][srcCol]->getName() == 'B')
 	{
 		board[destRow][destCol] = new Bishop(board[srcRow][srcCol]->getName(),
+			board[srcRow][srcCol]->getColor(), dstSquare);
+	}
+	else if (board[srcRow][srcCol]->getName() == 'q' || board[srcRow][srcCol]->getName() == 'Q')
+	{
+		board[destRow][destCol] = new Queen(board[srcRow][srcCol]->getName(),
 			board[srcRow][srcCol]->getColor(), dstSquare);
 	}
 	delete board[srcRow][srcCol];
