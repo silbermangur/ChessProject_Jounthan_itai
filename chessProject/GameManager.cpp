@@ -6,11 +6,23 @@ GameManger::GameManger(string gameBoard) : positionBoard(8, vector<string>(8))
 	int positionNum = 8;
 	char positionChar = 'a';
 	board[0][3] = new King('k', 'b', "d8");
-	board[7][3] = new King('k', 'w', "d1");
+	board[7][3] = new King('K', 'w', "d1");
 	board[0][0] = new Rock('r', 'b', "a8");
 	board[0][7] = new Rock('r', 'b', "h8");
-	board[7][0] = new Rock('r', 'w', "a1");
-	board[7][7] = new Rock('r', 'w', "h1");
+	board[7][0] = new Rock('R', 'w', "a1");
+	board[7][7] = new Rock('R', 'w', "h1");
+	board[0][1] = new Knight('n', 'b', "b8");
+	board[0][6] = new Knight('n', 'b', "g8");
+	board[7][1] = new Knight('N', 'w', "b1");
+	board[7][6] = new Knight('N', 'w', "g1");
+	board[0][2] = new Bishop('b', 'b', "c8");
+	board[0][5] = new Bishop('b', 'b', "f8");
+	board[7][2] = new Bishop('B', 'w', "c1");
+	board[7][5] = new Bishop('B', 'w', "f1");
+
+
+	
+	
 	//initlize board to starting postion
 	for (int i = 0; i < 8; i++)
 	{
@@ -19,19 +31,20 @@ GameManger::GameManger(string gameBoard) : positionBoard(8, vector<string>(8))
 			if (board[i][j] == nullptr) 
 			{
 				board[i][j] = new Piece(); 
+				//initilizing color for black
+				if (i < 1)
+				{
+					board[i][j]->setColor('b');
+				}
+				//initilizing color for white
+				else if (i > 6)
+				{
+					board[i][j]->setColor('w');
+				}
+				//initilizng names for pieces
+				board[i][j]->setName(gameBoard[n]);
 			}
-			//initilizing color for black
-			if (i < 1)
-			{
-				board[i][j]->setColor('b');
-			}
-			//initilizing color for white
-			else if (i > 6)
-			{
-				board[i][j]->setColor('w');
-			}
-			//initilizng names for pieces
-			board[i][j]->setName(gameBoard[n]);
+			
 			//initilizng position for pieces
 			this->positionBoard[i][j] = (positionChar + to_string(positionNum));
 			board[i][j]->setPosition(positionChar+to_string(positionNum));
@@ -262,6 +275,16 @@ void GameManger::movePiece(int srcRow, int srcCol, int destRow, int destCol, str
 	else if (board[srcRow][srcCol]->getName() == 'k' || board[srcRow][srcCol]->getName() == 'K')
 	{
 		board[destRow][destCol] = new King(board[srcRow][srcCol]->getName(),
+			board[srcRow][srcCol]->getColor(), dstSquare);
+	}
+	else if (board[srcRow][srcCol]->getName() == 'n' || board[srcRow][srcCol]->getName() == 'N')
+	{
+		board[destRow][destCol] = new Knight(board[srcRow][srcCol]->getName(),
+			board[srcRow][srcCol]->getColor(), dstSquare);
+	}
+	else if (board[srcRow][srcCol]->getName() == 'b' || board[srcRow][srcCol]->getName() == 'B')
+	{
+		board[destRow][destCol] = new Bishop(board[srcRow][srcCol]->getName(),
 			board[srcRow][srcCol]->getColor(), dstSquare);
 	}
 	delete board[srcRow][srcCol];

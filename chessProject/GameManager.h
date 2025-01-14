@@ -2,6 +2,8 @@
 #include "Rock.h"
 #include "Piece.h"
 #include "King.h"
+#include "Knight.h"
+#include "Bishop.h"
 #include <vector>
 
 
