@@ -38,7 +38,7 @@ bool Pawn::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCo
         {
             if (destRow == row + one)
             {
-                if (board[destRow][destCol]->getColor() != (board[row][col]->getColor()) && ('#'))
+                if (board[destRow - 1][destCol - 1]->getColor() != board[row - 1][col - 1]->getColor() && board[destRow - 1][destCol - 1]->getColor() != '#')
                 {
                     return true;
                 }
@@ -50,6 +50,10 @@ bool Pawn::move(Piece* (&board)[8][8], int row, int col, int destRow, int destCo
 
 bool Pawn::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
+    if (col != destCol)
+    {
+        return false;
+    }
     int one = 1;
     if (this->getColor() == 'b')
     {

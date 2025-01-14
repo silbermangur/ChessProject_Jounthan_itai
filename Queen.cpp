@@ -29,28 +29,31 @@ bool Queen::move(Piece* (&board)[8][8], int row, int col, int destRow, int destC
 
 bool Queen::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
-    int i, j, targetNum1, targetNum2 = 0;
+    int i = 0;
+    int j = 0;
+    int targetNum2 = 0;
+    int targetNum1 = 0;
 
     if (row == destRow)
     {
         if (col < destCol)
         {
-            i = col - 1;
-            targetNum1 = destCol - 1;
+            i = col;
+            targetNum1 = destCol;
         }
         else if (destCol < col)
         {
-            i = destCol - 1;
-            targetNum1 = col - 1;
+            i = destCol;
+            targetNum1 = col;
         }
         for (; i < targetNum1; i++)
         {
-            if (board[row - 1][i]->getColor() != '#')
+            if (board[row][i]->getColor() != '#')
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
                
     else
@@ -59,63 +62,63 @@ bool Queen::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, i
         {
             if (row < destRow)
             {
-                i = row - 1;
-                targetNum1 = destRow - 1;
+                i = row;
+                targetNum1 = destRow;
             }
             else if (row > destRow)
             {
-                i = destRow - 1;
-                targetNum1 = row - 1;
+                i = destRow;
+                targetNum1 = row;
             }
             for (; i < targetNum1; i++)
             {
-                if (board[i][col - 1]->getColor() != '#')
+                if (board[i][col]->getColor() != '#')
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     
         else
         {
             if (row < destRow && col < destCol)
             {
-                i = row - 1;
-                targetNum1 = destRow - 1;
-                j = col - 1;
-                targetNum2 = destCol - 1;
+                i = row;
+                targetNum1 = destRow;
+                j = col;
+                targetNum2 = destCol;
             }
             else if (row < destRow && destCol < col)
             {
-                i = row - 1;
-                targetNum1 = destRow - 1;
-                j = destCol - 1;
-                targetNum2 = col - 1;
+                i = row;
+                targetNum1 = destRow;
+                j = destCol;
+                targetNum2 = col;
             }
             else if (destRow < row && col < destCol)
             {
-                i = destRow - 1;
-                targetNum1 = row - 1;
-                j = col - 1;
-                targetNum2 = destCol - 1;
+                i = destRow;
+                targetNum1 = row;
+                j = col;
+                targetNum2 = destCol;
             }
             else if (row < destRow && destCol < col)
             {
-                i = destRow - 1;
-                targetNum1 = row - 1;
-                j = destCol - 1;
-                targetNum2 = col - 1;
+                i = destRow;
+                targetNum1 = row;
+                j = destCol;
+                targetNum2 = col;
             }
 
-            for (; i < targetNum1 && j < targetNum2; i++, j++)
+            for (; i <= targetNum1 && j <= targetNum2; i++, j++)
             {
                 if (board[i][j]->getColor() != '#')
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     }   
     return false;

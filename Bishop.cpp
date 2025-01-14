@@ -18,43 +18,47 @@ bool Bishop::move(Piece* (&board)[8][8], int row, int col, int destRow, int dest
 
 bool Bishop::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, int destCol)
 {
-    int i, j, targetNum1, targetNum2 = 0;
+    int i = 0;
+    int j = 0;
+    int targetNum2 = 0;
+    int targetNum1 = 0;
+
 
     if (row < destRow && col < destCol)
     {
-        i = row - 1;
-        targetNum1 = destRow - 1;
-        j = col - 1;
-        targetNum2 = destCol - 1;
+        i = row ;
+        targetNum1 = destRow;
+        j = col;
+        targetNum2 = destCol;
     }
     else if (row < destRow && destCol < col)
     {
-        i = row - 1;
-        targetNum1 = destRow - 1;
-        j = destCol - 1;
-        targetNum2 = col - 1;
+        i = row;
+        targetNum1 = destRow;
+        j = destCol;
+        targetNum2 = col;
     }
     else if (destRow < row && col < destCol)
     {
-        i = destRow - 1;
-        targetNum1 = row - 1;
-        j = col - 1;
-        targetNum2 = destCol - 1;
+        i = destRow;
+        targetNum1 = row;
+        j = col;
+        targetNum2 = destCol;
     }
     else if (row < destRow && destCol < col)
     {
-        i = destRow - 1;
-        targetNum1 = row - 1;
-        j = destCol - 1;
-        targetNum2 = col - 1;
+        i = destRow;
+        targetNum1 = row;
+        j = destCol;
+        targetNum2 = col;
     }
 
-    for (; i < targetNum1 && j < targetNum2; i++, j++)
+    for (; i <= targetNum1 && j <= targetNum2; i++, j++)
     {
-        if (board[i][j]->getColor() != '#')
+        if (board[i][j]->getName() != '#')
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }

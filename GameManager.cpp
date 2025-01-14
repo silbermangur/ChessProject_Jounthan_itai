@@ -124,7 +124,8 @@ int GameManager::isCommandValid(string command)
 	int col = command[0] - 'a';// 'a' -> column 0, 'b' -> column 1, etc.
 	string srcSquare = command.substr(0, 2);
 	string dstSquare = command.substr(2, 2);
-	
+
+
 	if (command[0] == command[2] && command[1] == command[3])
 	{
 		cout << "Invalid Move!!source square and dest square identical." << endl;
@@ -136,7 +137,7 @@ int GameManager::isCommandValid(string command)
 		cout << "Invalid Move!!source square or dest square invalid." << endl;
 		return 5;
 	}
-	else if (this->_board[row][col]->getColor() != this->_turn)
+	else if (this->_board[row][col]->getColor() != _turn)
 	{
 		cout << "Invalid Move!!source square dosent contain current player piece." << endl;
 		return 2;
@@ -232,6 +233,7 @@ bool GameManager::doesMovePutKingInCheck(int srcRow, int srcCol, int destRow, in
 	board[srcRow][srcCol] = tempSrc;
 	board[destRow][destCol] = tempDest;
 
+	printf("DSD");
 	return kingInCheck;
 }
 
