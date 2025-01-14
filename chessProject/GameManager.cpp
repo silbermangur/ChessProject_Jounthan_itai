@@ -21,13 +21,22 @@ GameManger::GameManger(string gameBoard) : positionBoard(8, vector<string>(8))
 	board[7][5] = new Bishop('B', 'w', "f1");
 	board[0][4] = new Queen('q', 'b', "e8");
 	board[7][4] = new Queen('Q', 'w', "e1");
+	
 
 	//initlize board to starting postion
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j ++ )
 		{
-			if (board[i][j] == nullptr) 
+			if (i == 1)
+			{
+				board[i][j] = new Pawn('p', 'b', " ", false);
+			}
+			else if (i == 6)
+			{
+				board[i][j] = new Pawn('P', 'w', " ", false);
+			}
+			else if (board[i][j] == nullptr) 
 			{
 				board[i][j] = new Piece(); 
 				//initilizing color for black
@@ -206,7 +215,7 @@ bool GameManger::doesMovePutKingInCheck(int srcRow, int srcCol, int destRow, int
 		}
 		if (kingInCheck) break;
 	}
-
+	delete board[srcRow][srcCol];
 	// Restore the board
 	board[srcRow][srcCol] = tempSrc;
 	board[destRow][destCol] = tempDest;
@@ -290,6 +299,11 @@ void GameManger::movePiece(int srcRow, int srcCol, int destRow, int destCol, str
 	{
 		board[destRow][destCol] = new Queen(board[srcRow][srcCol]->getName(),
 			board[srcRow][srcCol]->getColor(), dstSquare);
+	}
+	else if (board[srcRow][srcCol]->getName() == 'p' || board[srcRow][srcCol]->getName() == 'P')
+	{
+		board[destRow][destCol] = new Pawn(board[srcRow][srcCol]->getName(),
+			board[srcRow][srcCol]->getColor(), dstSquare, true);	
 	}
 	delete board[srcRow][srcCol];
 	board[srcRow][srcCol] = new Piece('#', ' ', srcSquare);

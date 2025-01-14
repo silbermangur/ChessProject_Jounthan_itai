@@ -16,11 +16,13 @@ bool Queen::isPieceInWay(Piece* (&board)[8][8], int row, int col, int destRow, i
     Bishop bishop(' ', ' ', " ");
 
     // Rook's movement check: straight line
-    if (row == destRow || col == destCol) {
+    if (row == destRow || col == destCol) 
+    {
         return rock.isPieceInWay(board, row, col, destRow, destCol);  // Delegate to Rock
     }
     // Bishop's movement check: diagonal
-    if (abs(destRow - row) == abs(destCol - col)) {
+    if (abs(destRow - row) == abs(destCol - col)) 
+    {
         return bishop.isPieceInWay(board, row, col, destRow, destCol);  // Delegate to Bishop
     }
     return false;

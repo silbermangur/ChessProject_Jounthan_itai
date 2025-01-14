@@ -7,7 +7,7 @@ int main()
 {
 	string input = "";
 	bool stop =true;
-	GameManger g("rnbkqbnr################################################RNBKQBNR1");
+	GameManger g("rnbkqbnrpppppppp##################################PPPPPPPPRNBKQBNR1");
 	
 
 	while (stop)
